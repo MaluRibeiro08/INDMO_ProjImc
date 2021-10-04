@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity()
         setContentView(R.layout.activity_main)
             //"R" de recursos
             //"activity_main" é o arquivo de layout, onde a tela está descrita
+        supportActionBar!!.hide()
 
         val buttonCalcular = findViewById<Button>(R.id.button_calcular)
             //criando variável para se referenciar ao botão que colocamos no layout

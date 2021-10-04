@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:background="@drawable/edit_text_background"
-        android:textColor="@color/orange_brown"
+        android:textColor="@color/pink_800"
         android:maxLines="1"
         android:inputType="numberDecimal"
         android:maxLength="3"

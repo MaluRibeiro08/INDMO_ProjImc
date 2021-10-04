@@ -9,19 +9,25 @@
         android:roundIcon="@drawable/fita_metrica"
         android:supportsRtl="true"
         android:theme="@style/Theme.PrimeiroApp" >
+
         <activity android:name=".DashboardActivity" >
+
+        </activity>
+
+        <activity android:name=".CadastroUsuarioActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CadastroUsuarioActivity" >
+
+        <activity android:name=".LoginActivity" >
 
         </activity>
-        <activity android:name=".LoginActivity" >
-        </activity>
+
         <activity android:name=".MainActivity" >
+
         </activity>
 
         <meta-data
