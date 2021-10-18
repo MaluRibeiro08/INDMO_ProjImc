@@ -74,6 +74,7 @@
             android:paddingTop="30dp"
             android:paddingEnd="20dp"
             android:paddingBottom="30dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,13 +85,16 @@
                 android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="E-mail"
-                app:boxStrokeColor="@color/pink_500">
+                app:boxStrokeColor="@color/pink_500"
+                app:errorEnabled="true">
 
                 <EditText
+                    android:id="@+id/edit_text_email_cadastro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -99,11 +103,12 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="30dp"
                 android:hint="Senha"
                 app:boxStrokeColor="@color/pink_500">
 
                 <EditText
+                    android:id="@+id/edit_text_senha_cadastro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
@@ -127,6 +132,7 @@
                 app:boxStrokeColor="@color/pink_500">
 
                 <EditText
+                    android:id="@+id/edit_text_nome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName" />
@@ -140,6 +146,7 @@
                 app:boxStrokeColor="@color/pink_500">
 
                 <EditText
+                    android:id="@+id/edit_text_profissao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -153,6 +160,7 @@
                 app:boxStrokeColor="@color/pink_500">
 
                 <EditText
+                    android:id="@+id/edit_text_altura"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal" />
@@ -167,12 +175,11 @@
                 app:boxStrokeColor="@color/pink_500">
 
                 <EditText
-                    android:id="@+id/et_data_nascimento"
+                    android:id="@+id/edit_text_data_nascimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
                     android:focusable="false"
-                    />
+                    android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -183,6 +190,7 @@
                 android:textSize="20sp" />
 
             <RadioGroup
+                android:id="@+id/radio_group_sexo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -190,6 +198,7 @@
                 android:textAlignment="center">
 
                 <RadioButton
+                    android:id="@+id/radio_button_fem"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="1"
@@ -198,6 +207,7 @@
                     android:textSize="20sp" />
 
                 <RadioButton
+                    android:id="@+id/radio_button_masc"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="1"
@@ -211,8 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"
-                />
+                android:background="@android:color/darker_gray" />
 
         </LinearLayout>
     </ScrollView>
