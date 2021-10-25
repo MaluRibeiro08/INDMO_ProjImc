@@ -1,12 +1,17 @@
 package com.example.primeiroapp.ui
 
 import android.app.DatePickerDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import com.example.primeiroapp.R
+import com.example.primeiroapp.model.Usuario
+import com.example.primeiroapp.util.convertStringToLocalDate
+import java.time.LocalDate
 import java.util.*
 
 class CadastroUsuarioActivity : AppCompatActivity()
@@ -70,7 +75,65 @@ class CadastroUsuarioActivity : AppCompatActivity()
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
             if(validarCampos()) {
+                //SALVANDO REGISTRO NO SHARED PREFERENCES
+
+                    //criando o objeto usuário a ser salvo no SharedPreferences
+
+                        //separando a data para passar como parametro na criação do usuário.
+                            //val dataSeparada = editDataNascimento.text.toString().split("/")
+                            //LocalDate.of(dataSeparada[2].toInt(), dataSeparada[1].toInt(), dataSeparada[0].toInt())
+                            val dataNascimento = convertStringToLocalDate(editDataNascimento.text.toString())
+
+                        //separando a data para passar como parametro na criação do usuário.
+                            //val idSexoSelecionado = radioGrupSexo.checkedRadioButtonId
+                            //var sexoSelecionado = ""
+                            //if (idSexoSelecionado.equals(radioButtonMasc.id))
+                            //{
+                            //    sexoSelecionado = "M"
+                            //}
+                            //else if (idSexoSelecionado.equals(radioButtonFem.id))
+                           //{
+                           //     sexoSelecionado = "F"
+                            //}
+
+                        //usando o contrutuor da classe para criá-la. Colocamos os atributos na ordem que está na declaração da classe
+                            val usuario = Usuario(
+                                1,
+                                editNome.text.toString(),
+                                editEmail.text.toString(),
+                                editSenha.text.toString(),
+                                0,
+                                editAltura.text.toString().toDouble(),
+                                LocalDate.of(dataNascimento.year, dataNascimento.monthValue, dataNascimento.dayOfMonth),
+                                editProfissao.text.toString(),
+                                if (radioButtonFem.isChecked) 'F' else 'M'
+                            )
+
+                    //verificando a existência de um sharedPreferences. Em caso positivo, o abre para edicao; em caso negativo, cria um
+                        val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+                            //getSharedPreferences recebe o nome do arquivo a ser aberto/criado E o modo com que essa abertura deve acontecer (privada, nesse caso)
+                            // "dados" agora representa o arquivo
+
+                    //criando um objeto que permite a edição do SharedPreferences
+                        val editor = dados.edit()
+
+                    //clocando as coisas no editor para mandar pro arquivo
+                        editor.putInt("id", usuario.id)
+                        editor.putString("nome", usuario.nome)
+                        editor.putString("email", usuario.email)
+                        editor.putString("senha", usuario.senha)
+                        editor.putInt("peso", usuario.peso)
+                        editor.putFloat("altura", usuario.altura.toFloat())
+                        editor.putString("dataNascimento", usuario.dataNascimento.toString())
+                        editor.putString("profissao", usuario.profissao)
+                        editor.putString("sexo", usuario.sexo.toString())
+
+                    //finalizando a edição: enviando as informação para o arquivo, grando elas nele
+                        editor.apply()
                 Toast.makeText(this, "Perfil Salvo", Toast.LENGTH_SHORT).show()
+
+
+
             }
             else {
                     Toast.makeText(this, "Complete as informações", Toast.LENGTH_SHORT).show()
