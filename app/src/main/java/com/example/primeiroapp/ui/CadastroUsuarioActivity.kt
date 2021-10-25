@@ -1,13 +1,12 @@
-package com.example.primeiroapp
+package com.example.primeiroapp.ui
 
 import android.app.DatePickerDialog
-import android.content.ClipData
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
-import com.google.android.material.textfield.TextInputLayout
+import com.example.primeiroapp.R
 import java.util.*
 
 class CadastroUsuarioActivity : AppCompatActivity()
@@ -74,7 +73,7 @@ class CadastroUsuarioActivity : AppCompatActivity()
                 Toast.makeText(this, "Perfil Salvo", Toast.LENGTH_SHORT).show()
             }
             else {
-//                    Toast.makeText(this, "Complete as informações", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Complete as informações", Toast.LENGTH_SHORT).show()
             }
 
         return true;
@@ -92,6 +91,11 @@ class CadastroUsuarioActivity : AppCompatActivity()
         if (editSenha.text.isEmpty())
         {
             editSenha.error = "Senha é obrigatório"
+            validos = false
+        }
+        if (editSenha.text.length < 8)
+        {
+            editSenha.error = "Senha deve ter no min 8 digitos"
             validos = false
         }
         if (editNome.text.isEmpty())
@@ -114,12 +118,19 @@ class CadastroUsuarioActivity : AppCompatActivity()
             editDataNascimento.error = "Data de nascimento é obrigatório"
             validos = false
         }
+        else
+        {
+            editDataNascimento.error = null
+        }
         if (!radioButtonFem.isChecked && !radioButtonMasc.isChecked)
         {
-            Toast.makeText(this, "Escolha uma opção", Toast.LENGTH_SHORT).show()
+            radioButtonMasc.error = "Um sexo deve ser selecionado"
             validos = false
         }
-
+        else
+        {
+            radioButtonMasc.error = null
+        }
 
         return validos
     }

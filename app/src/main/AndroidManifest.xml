@@ -10,15 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PrimeiroApp" >
 
-        <activity android:name=".DashboardActivity" >
+        <activity android:name=".ui.DashboardActivity" >
 
         </activity>
 
-        <activity android:name=".CadastroUsuarioActivity" >
+        <activity android:name=".ui.CadastroUsuarioActivity" >
 
         </activity>
 
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".ui.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
