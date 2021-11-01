@@ -2,18 +2,24 @@ package com.example.primeiroapp.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import androidx.core.view.drawToBitmap
 import com.example.primeiroapp.R
 import com.example.primeiroapp.model.Usuario
+import com.example.primeiroapp.util.convertBitmapToBase64
 import com.example.primeiroapp.util.convertStringToLocalDate
+import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.util.*
-
+const val CODE_IMAGE = 100 // constante para identificar a resposta da requisião da imagem para a galeria
 class CadastroUsuarioActivity : AppCompatActivity()
 {
     lateinit var editEmail: EditText
@@ -25,6 +31,10 @@ class CadastroUsuarioActivity : AppCompatActivity()
     lateinit var radioButtonFem : RadioButton
     lateinit var radioButtonMasc : RadioButton
     lateinit var radioGrupSexo : RadioGroup
+    lateinit var textViewTrocarFoto : TextView
+    lateinit var imageViewFotoPerfil : ImageView
+    var imageBitmapFotoPerfil: Bitmap? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -40,9 +50,16 @@ class CadastroUsuarioActivity : AppCompatActivity()
         radioButtonFem = findViewById<RadioButton>(R.id.radio_button_fem)
         radioButtonMasc = findViewById<RadioButton>(R.id.radio_button_masc)
         radioGrupSexo = findViewById<RadioGroup>(R.id.radio_group_sexo)
+        textViewTrocarFoto = findViewById<TextView>(R.id.text_view_trocar_foto)
+        imageViewFotoPerfil = findViewById<ImageView>(R.id.image_view_foto_perfil)
+
 
         supportActionBar!!.title = "Perfil"
 
+        //abrir a galeria de fotos para escolher uma foto
+        textViewTrocarFoto.setOnClickListener {
+            abrirGaleria()
+        }
         //criando calendário
         //instancia um objeto calendário
         val calendario = Calendar.getInstance()
@@ -55,15 +72,89 @@ class CadastroUsuarioActivity : AppCompatActivity()
         //abrir date picker
         val etDataNascimento = findViewById<EditText>(R.id.edit_text_data_nascimento)
         etDataNascimento.setOnClickListener {
-            val dp = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, _ano, _mes, _diaDoMes -> etDataNascimento.setText("$_diaDoMes/${_mes+1}/$_ano")}, ano, mes, dia)
+            val dp = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, _ano, _mes, _diaDoMes ->
+
+                var diaDoMesFormatado = ""
+                val mesSomadoUm = _mes+1 //fazemos isso porque o pc define janeiro como 0
+                var mesFormatado = ""
+
+                if(_diaDoMes < 10)
+                {
+                    diaDoMesFormatado = "0$_diaDoMes"
+                }
+                else
+                {
+                    diaDoMesFormatado = _diaDoMes.toString()
+                }
+
+                if (mesSomadoUm < 10)
+                {
+                    mesFormatado = "0$mesSomadoUm"
+                }
+                else
+                {
+                    mesFormatado = mesSomadoUm.toString()
+                }
+
+                Log.i("teste", diaDoMesFormatado)
+                Log.i("teste", mesFormatado)
+
+                etDataNascimento.setText("$diaDoMesFormatado/$mesFormatado/$_ano")}, ano, mes, dia)
             //Argumentos para datePickerDialog:
                 // - Onde o calendário vai aparecer (na mesma tela "this")
                 // - Fução: quando uma data for escolhida ("OnDateSetListener"), vai disparar a função de seta que guarda a data escolhida no calendário e depois joga isso no TextView no formato BR
                 // - data, mes e ano que estarão no calendário ao abrir.
 
+
+
+
             dp.show()
 
             }
+    }
+
+    // ao ser chamado, recebe o código que escolhemos para a requisição, o código que exprime o resultado da requisição e o aquivo que veio na requisição
+    override fun onActivityResult(requestCode: Int, resultCode: Int, imagem: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, imagem)
+
+        //verificar qual a requisição e qual o código do reultado | se escolheu -1; se não escolheu 0
+        //Log.i("teste", resultCode.toString())
+        if(requestCode == CODE_IMAGE && resultCode == -1)
+        {
+            //recuperar a imagem do Stream (fluxo de bits formados a partir da decomposição da imagem)
+            val fluxoImagemPerfil = contentResolver.openInputStream(imagem!!.data!!)
+                //o contentResolver interpreta o fluxo que veio e, para isso, precisamos abrir a entrada do fluxo (que está em "data" de "imagem")
+
+            //convertendo os bits que vieram em bitmap
+            imageBitmapFotoPerfil = BitmapFactory.decodeStream(fluxoImagemPerfil)
+
+            //colocando bitmap no imagem view
+            imageViewFotoPerfil.setImageBitmap(imageBitmapFotoPerfil)
+        }
+        if(requestCode == CODE_IMAGE && resultCode == 0) {
+            Toast.makeText(this, "Nenhuma imagem selecionada", Toast.LENGTH_SHORT).show()
+        }
+
+        else
+        {
+            Toast.makeText(this, "Oie", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+     fun abrirGaleria() {
+        //Criando intent para abrir a galeria de imagesn do dispositivo
+        val intentGaleria = Intent(Intent.ACTION_GET_CONTENT)//pega imagem, audio e vídeo
+
+        intentGaleria.type = "image/*" //determinando o que poderia ser carregado, o tipo de arquivo. "*" SIGNIFICA "tudo"
+
+        //abrir a activity responsável por exibir as imagens. Ela retormará o conteúdo selecionado para o app
+            //abrindo a activity/intent que espera por um resultado
+            startActivityForResult(Intent.createChooser(intentGaleria, "Escolha a sua foto de perfil"), CODE_IMAGE)
+                //cria um chooser, que tem como parâmetro a nossa intenção e a frase que aparecerá para o usuário
+                //o numero passado através da constante serve para identificar a resposta que vem da requisicao. Pode ser aleatório, de 1 ao infinito. A cada serviço externo, você escolhe um, porque não pode repetir
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean
@@ -84,7 +175,12 @@ class CadastroUsuarioActivity : AppCompatActivity()
                             //LocalDate.of(dataSeparada[2].toInt(), dataSeparada[1].toInt(), dataSeparada[0].toInt())
                             val dataNascimento = convertStringToLocalDate(editDataNascimento.text.toString())
 
-                        //separando a data para passar como parametro na criação do usuário.
+                    //val bitmapImagemPerfil = imageBitmapFotoPerfil
+                    //itmapImagemPerfil!!.compress(Bitmap.CompressFormat.PNG,100,arrayBytesImgemPerfil)
+                    //  Byte[] b = arrayBytesImgemPerfil.toByteArray()
+
+
+                    //verificando sexo.
                             //val idSexoSelecionado = radioGrupSexo.checkedRadioButtonId
                             //var sexoSelecionado = ""
                             //if (idSexoSelecionado.equals(radioButtonMasc.id))
@@ -106,7 +202,8 @@ class CadastroUsuarioActivity : AppCompatActivity()
                                 editAltura.text.toString().toDouble(),
                                 LocalDate.of(dataNascimento.year, dataNascimento.monthValue, dataNascimento.dayOfMonth),
                                 editProfissao.text.toString(),
-                                if (radioButtonFem.isChecked) 'F' else 'M'
+                                if (radioButtonFem.isChecked) 'F' else 'M',
+                                convertBitmapToBase64(imageBitmapFotoPerfil!!)
                             )
 
                     //verificando a existência de um sharedPreferences. Em caso positivo, o abre para edicao; em caso negativo, cria um
@@ -127,6 +224,7 @@ class CadastroUsuarioActivity : AppCompatActivity()
                         editor.putString("dataNascimento", usuario.dataNascimento.toString())
                         editor.putString("profissao", usuario.profissao)
                         editor.putString("sexo", usuario.sexo.toString())
+                        editor.putString("fotoPerfil", usuario.fotoPerfil)
 
                     //finalizando a edição: enviando as informação para o arquivo, grando elas nele
                         editor.apply()
