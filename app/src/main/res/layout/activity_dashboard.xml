@@ -29,13 +29,16 @@
                 app:cardCornerRadius="60dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/foto_perfil2"
-                    android:scaleType="centerCrop"/>
+                    android:id="@+id/image_view_foto_perfil_dashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/usuario_icon" />
+
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/text_view_nome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -47,6 +50,7 @@
                 android:textStyle="normal" />
 
             <TextView
+                android:id="@+id/text_view_profissao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
@@ -69,10 +73,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_imc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="25.7"
+                    android:text="00.0"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -97,10 +102,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_ncd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="1980"
+                    android:text="0000"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -125,10 +131,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_idade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="49"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -154,10 +161,11 @@
 
 
                 <TextView
+                    android:id="@+id/text_view_peso"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="67"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -183,10 +191,11 @@
 
 
                 <TextView
+                    android:id="@+id/text_view_altura"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="1,73"
+                    android:text="0,00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"

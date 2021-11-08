@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.drawToBitmap
 import com.example.primeiroapp.R
 import com.example.primeiroapp.model.Usuario
@@ -53,6 +54,8 @@ class CadastroUsuarioActivity : AppCompatActivity()
         textViewTrocarFoto = findViewById<TextView>(R.id.text_view_trocar_foto)
         imageViewFotoPerfil = findViewById<ImageView>(R.id.image_view_foto_perfil)
 
+//      imageViewFotoPerfil.setImageBitmap(resources.getDrawable(R.drawable.usuario_icon).toBitmap())
+        imageBitmapFotoPerfil = resources.getDrawable(R.drawable.usuario_icon).toBitmap()
 
         supportActionBar!!.title = "Perfil"
 
@@ -247,6 +250,11 @@ class CadastroUsuarioActivity : AppCompatActivity()
         if (editEmail.text.isEmpty())
         {
             editEmail.error = "Email é obrigatório"
+            validos = false
+        }
+        if (imageBitmapFotoPerfil == null)
+        {
+            Toast.makeText(this, "Escolha uma foto!", Toast.LENGTH_SHORT).show()
             validos = false
         }
         if (editSenha.text.isEmpty())
