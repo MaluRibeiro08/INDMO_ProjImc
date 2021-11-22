@@ -12,12 +12,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.drawToBitmap
 import com.example.primeiroapp.R
 import com.example.primeiroapp.model.Usuario
 import com.example.primeiroapp.util.convertBitmapToBase64
-import com.example.primeiroapp.util.convertStringToLocalDate
-import java.io.ByteArrayOutputStream
+import com.example.primeiroapp.util.convertBrasilianStringToLocalDate
 import java.time.LocalDate
 import java.util.*
 const val CODE_IMAGE = 100 // constante para identificar a resposta da requisião da imagem para a galeria
@@ -176,7 +174,7 @@ class CadastroUsuarioActivity : AppCompatActivity()
                         //separando a data para passar como parametro na criação do usuário.
                             //val dataSeparada = editDataNascimento.text.toString().split("/")
                             //LocalDate.of(dataSeparada[2].toInt(), dataSeparada[1].toInt(), dataSeparada[0].toInt())
-                            val dataNascimento = convertStringToLocalDate(editDataNascimento.text.toString())
+                            val dataNascimento = convertBrasilianStringToLocalDate(editDataNascimento.text.toString())
 
                     //val bitmapImagemPerfil = imageBitmapFotoPerfil
                     //itmapImagemPerfil!!.compress(Bitmap.CompressFormat.PNG,100,arrayBytesImgemPerfil)

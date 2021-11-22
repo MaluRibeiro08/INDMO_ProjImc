@@ -19,6 +19,12 @@ fun convertBitmapToBase64(bitmap: Bitmap) : String
     return Base64.encodeToString(bitmapArray.toByteArray(), Base64.DEFAULT)
 }
 
+fun convertBase64ToBitmap(base64String : String) : Bitmap
+{
+    val imagemBytes = Base64.decode(base64String, Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(imagemBytes, 0, imagemBytes.size)
+}
+
 //fun convertBase64ToBitmap(base644: String) : Bitmap
 //{
 //    val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
