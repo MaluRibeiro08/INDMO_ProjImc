@@ -2,11 +2,14 @@ package com.example.primeiroapp.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import com.example.primeiroapp.R
 import com.example.primeiroapp.util.convertBrasilianStringToLocalDate
@@ -18,6 +21,7 @@ class CadastroPesoActivity : AppCompatActivity() {
     lateinit var editDataPesagem: EditText
     lateinit var editPesoAtualizado: EditText
     lateinit var buttonRegistrarPesagem: Button
+    lateinit var spinnerNiveisAtividadeFisica : Spinner
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +31,7 @@ class CadastroPesoActivity : AppCompatActivity() {
         editDataPesagem = findViewById(R.id.edit_text_data_pesagem)
         editPesoAtualizado = findViewById(R.id.edit_text_peso_atualizado)
         buttonRegistrarPesagem = findViewById(R.id.but_resgistrarPeso)
+        spinnerNiveisAtividadeFisica = findViewById(R.id.spinner_niveis)
 
         //setando a data atual no Edit de data
         editDataPesagem.setText(convertInternationalLocalDateToBrazilianString(LocalDate.now()))
@@ -78,25 +83,36 @@ class CadastroPesoActivity : AppCompatActivity() {
         }
 
         buttonRegistrarPesagem.setOnClickListener {
-            salvarRegistroPesagem()
-            Toast.makeText(this, "oi", Toast.LENGTH_SHORT).show()
+            if (salvarRegistroPesagem())
+            {
+                Toast.makeText(this, "Pesagem salva", Toast.LENGTH_SHORT).show()
+                val abrirActivityDashboard= Intent(this, DashboardActivity::class.java)
+                    //contexto e "destino" ||||| ::class.java - instancia a classe
+                startActivity(abrirActivityDashboard)
 
+            }
+            else
+            {
+                Toast.makeText(this, "Falha ao salvar", Toast.LENGTH_SHORT).show()
+            }
         }
         supportActionBar!!.hide()
     }
 
-    fun salvarRegistroPesagem()
+    fun salvarRegistroPesagem() : Boolean
     {
         if (validarCampos())
         {
             val dataPesagemLocalDate = convertBrasilianStringToLocalDate(editDataPesagem.text.toString())
             val dataPesagemString = dataPesagemLocalDate.toString()
 
+            val nivelAtividadePesagem = spinnerNiveisAtividadeFisica.selectedItem.toString()
+            
             val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
             val editor = dados.edit()
 
 
-
+            val tagNivelAtividadeFisica = "nivelAtividadeFisica-${dataPesagemString}"
             val tagDoPeso = "peso-${dataPesagemString}"
             val tagDaDataPesagem = "dataPesagem-${dataPesagemString}"
             val pesoRegistrado = editPesoAtualizado.text.toString().toInt()
@@ -106,17 +122,18 @@ class CadastroPesoActivity : AppCompatActivity() {
             //clocando as coisas no editor para mandar pro arquivo
             editor.putInt("${tagDoPeso}", pesoRegistrado)
             editor.putString("${tagDaDataPesagem}", dataPesagemString)
+            editor.putString("${tagNivelAtividadeFisica}", nivelAtividadePesagem)
 
 
 
             //finalizando a edição: enviando as informação para o arquivo, grando elas nele
             editor.apply()
-            Toast.makeText(this, "Pesagem salva", Toast.LENGTH_SHORT).show()
-
+            return true
         }
         else
         {
             Toast.makeText(this, "Complete as informações", Toast.LENGTH_SHORT).show()
+            return false
         }
 
     }
