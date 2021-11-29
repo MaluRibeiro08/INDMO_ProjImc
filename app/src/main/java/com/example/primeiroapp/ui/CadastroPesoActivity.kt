@@ -86,9 +86,7 @@ class CadastroPesoActivity : AppCompatActivity() {
             if (salvarRegistroPesagem())
             {
                 Toast.makeText(this, "Pesagem salva", Toast.LENGTH_SHORT).show()
-                val abrirActivityDashboard= Intent(this, DashboardActivity::class.java)
-                    //contexto e "destino" ||||| ::class.java - instancia a classe
-                startActivity(abrirActivityDashboard)
+                finish()
 
             }
             else
@@ -103,27 +101,79 @@ class CadastroPesoActivity : AppCompatActivity() {
     {
         if (validarCampos())
         {
-            val dataPesagemLocalDate = convertBrasilianStringToLocalDate(editDataPesagem.text.toString())
-            val dataPesagemString = dataPesagemLocalDate.toString()
+            //PRIMEIRA VERSAO
+//                val dataPesagemLocalDate = convertBrasilianStringToLocalDate(editDataPesagem.text.toString())
+//                val dataPesagemString = dataPesagemLocalDate.toString()
+//
+//                val nivelAtividadePesagem = spinnerNiveisAtividadeFisica.selectedItem.toString()
+//
+//                val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+//                val editor = dados.edit()
+//
+//
+//                val tagNivelAtividadeFisica = "nivelAtividadeFisica-${dataPesagemString}"
+//                val tagDoPeso = "peso-${dataPesagemString}"
+//                val tagDaDataPesagem = "dataPesagem-${dataPesagemString}"
+//                val pesoRegistrado = editPesoAtualizado.text.toString().toInt()
+//                Log.i("teste", tagDaDataPesagem)
+//                Log.i("teste", tagDoPeso)
+//
+//                //clocando as coisas no editor para mandar pro arquivo
+//                editor.putInt("${tagDoPeso}", pesoRegistrado)
+//                editor.putString("${tagDaDataPesagem}", dataPesagemString)
+//                editor.putString("${tagNivelAtividadeFisica}", nivelAtividadePesagem)
 
-            val nivelAtividadePesagem = spinnerNiveisAtividadeFisica.selectedItem.toString()
-            
-            val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
-            val editor = dados.edit()
+            //SEGUNDA VERSAO
+                //pegando valores registrados
+                    val dataPesagemLocalDate = convertBrasilianStringToLocalDate(editDataPesagem.text.toString())
+                    val dataPesagemString = dataPesagemLocalDate.toString()
+                    val pesoRegistrado = editPesoAtualizado.text.toString().toInt()
+                    val nivelAtividadePesagem = spinnerNiveisAtividadeFisica.selectedItemPosition.toString()
+
+                //Abrindo aquivo para edicao
+                    val dados = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+                    val editor = dados.edit()
+
+                //criando tags para registrar no aquivo
+                    val tagNivelAtividadeFisica = "niveisAtividadeFisica"
+                    val tagDoPeso = "pesos"
+                    val tagDataPesagem = "datasPesagens"
 
 
-            val tagNivelAtividadeFisica = "nivelAtividadeFisica-${dataPesagemString}"
-            val tagDoPeso = "peso-${dataPesagemString}"
-            val tagDaDataPesagem = "dataPesagem-${dataPesagemString}"
-            val pesoRegistrado = editPesoAtualizado.text.toString().toInt()
-            Log.i("teste", tagDaDataPesagem)
-            Log.i("teste", tagDoPeso)
+                //determinando os valores para cada chave
+            //
+            //${dados.getString("${tagDataPesagem}", ""!!)};
+            //${dados.getString("${tagNivelAtividadeFisica}", ""!!)};
 
-            //clocando as coisas no editor para mandar pro arquivo
-            editor.putInt("${tagDoPeso}", pesoRegistrado)
-            editor.putString("${tagDaDataPesagem}", dataPesagemString)
-            editor.putString("${tagNivelAtividadeFisica}", nivelAtividadePesagem)
+                //recuperando dados preexistentes no arquivo
+                val pesosAnteriores = dados.getString(tagDoPeso, "")
+                val datasPesagensAnteriores = dados.getString(tagDataPesagem, "")
+                val niveisAtividadeAnteriores = dados.getString(tagNivelAtividadeFisica, "")
 
+                //Setandos novos valores para as tags
+                    var valorTagPesagem = ""
+                    var valorTagDatasPesagem = ""
+                    var valorTagNiveisAtividadeFisica = ""
+
+                    if ((pesosAnteriores  == "") || (pesosAnteriores  == "") || (pesosAnteriores  == "") )
+                    {
+                        valorTagPesagem = "${pesoRegistrado}"
+                        valorTagDatasPesagem = "${dataPesagemString}"
+                        valorTagNiveisAtividadeFisica = "${nivelAtividadePesagem}"
+                    }
+                    else
+                    {
+                        valorTagPesagem = "${pesosAnteriores};${pesoRegistrado}"
+                        valorTagDatasPesagem = "${datasPesagensAnteriores};${dataPesagemString}"
+                        valorTagNiveisAtividadeFisica = "${niveisAtividadeAnteriores};${nivelAtividadePesagem}"
+                    }
+
+
+
+                //colocando as coisas no editor para mandar pro arquivo
+                    editor.putString(tagDoPeso, valorTagPesagem)
+                    editor.putString(tagDataPesagem, valorTagDatasPesagem)
+                    editor.putString(tagNivelAtividadeFisica, valorTagNiveisAtividadeFisica)
 
 
             //finalizando a edição: enviando as informação para o arquivo, grando elas nele

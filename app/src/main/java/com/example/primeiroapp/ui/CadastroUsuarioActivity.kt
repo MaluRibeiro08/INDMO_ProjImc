@@ -231,7 +231,9 @@ class CadastroUsuarioActivity : AppCompatActivity()
                         editor.apply()
                 Toast.makeText(this, "Perfil Salvo", Toast.LENGTH_SHORT).show()
 
-
+                val abrirActivityLogin= Intent(this, LoginActivity::class.java)
+                //contexto e "destino" ||||| ::class.java - instancia a classe
+                startActivity(abrirActivityLogin)
 
             }
             else {
