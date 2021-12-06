@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.primeiroapp.R
 import com.example.primeiroapp.calcularImc
+import com.example.primeiroapp.repository.PesagemRepository
 import com.example.primeiroapp.util.calcularIdade
 import com.example.primeiroapp.util.convertBase64ToBitmap
 import org.w3c.dom.Text
@@ -45,6 +46,7 @@ class DashboardActivity : AppCompatActivity() {
         textViewPeso = findViewById(R.id.text_view_peso)
         textViewImc = findViewById(R.id.text_view_imc)
         var cardRegistrarPesagem = findViewById<CardView>(R.id.card_registrar_pesagem)
+        var cardVerHistorico = findViewById<CardView>(R.id.card_historico)
 
         carregarDashboard()
 
@@ -56,6 +58,14 @@ class DashboardActivity : AppCompatActivity() {
 
             startActivity(abrirActivityRegistrarPeso)
         }
+
+        cardVerHistorico.setOnClickListener {
+            val abrirActivityHistorico = Intent(this, HistoricoActivity::class.java)
+            //contexto e "destino" ||||| ::class.java - instancia a classe
+
+            startActivity(abrirActivityHistorico)
+        }
+
         supportActionBar!!.hide()
     }
 

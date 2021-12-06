@@ -9,16 +9,14 @@
         android:roundIcon="@drawable/fita_metrica"
         android:supportsRtl="true"
         android:theme="@style/Theme.PrimeiroApp">
-
-        <activity android:name=".ui.CadastroPesoActivity"></activity>
-
-        <activity android:name=".ui.DashboardActivity"></activity>
-
-        <activity android:name=".ui.CadastroUsuarioActivity"></activity>
-
+        <activity android:name=".ui.HistoricoActivity"></activity>
+        <activity android:name=".ui.CadastroPesoActivity" />
+        <activity android:name=".ui.DashboardActivity" />
+        <activity android:name=".ui.CadastroUsuarioActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
